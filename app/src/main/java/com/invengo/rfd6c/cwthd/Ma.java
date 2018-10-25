@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -112,6 +111,23 @@ public class Ma extends AppCompatActivity implements IMessageNotificationReceive
 			}
 		});
 
+		// 读取按钮
+		final Button btnm = (Button) findViewById(R.id.btnm);
+		btnm.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (isConnect) {
+					if (isScanning) {
+						stop();
+						((Button)v).setText("读取");
+					} else {
+						scan();
+						((Button)v).setText("停止");
+					}
+				}
+			}
+		});
+
 		rd = IntegrateReaderManager.getInstance();
 		if (rd != null) {
 			rd.onMessageNotificationReceived.add(this);
@@ -158,22 +174,6 @@ public class Ma extends AppCompatActivity implements IMessageNotificationReceive
 			String s = HexUtil.toHexString(ri.getTID()) + " : " + ri.getTemperature() + "\n";
 			hd.sendMessage(hd.obtainMessage(1, s));
 		}
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_SOFT_RIGHT && event.getRepeatCount() == 0) {
-			scan();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_SOFT_RIGHT) {
-			stop();
-		}
-		return super.onKeyUp(keyCode, event);
 	}
 
 }
