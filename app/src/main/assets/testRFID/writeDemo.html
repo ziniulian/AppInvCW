@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WrtTt</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<script src="js/rfid.js"></script>
+		<script src="js/writeDemo.js"></script>
+
+		<style type="text/css">
+			.txtt {
+				display: block;
+				width: 88%;
+				height: 30%;
+				padding: 1%;
+				margin: 0 auto;
+				border: solid 0.2rem #999;
+				font-family: "Microsoft YaHei";
+			}
+			.note {
+				height: 2rem;
+				line-height: 2rem;
+				font-size: 1rem;
+				font-style: italic;
+				color: red;
+			}
+			a {
+				padding: 0.5rem;
+				position: absolute;
+			}
+			.right {
+				right: 0;
+			}
+			.noOut {
+				word-break: break-all;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso Lc_noadr">
+			<div id="note" class="note" onclick="dat.setTxt();"></div>
+			<textarea id="txt" class="sfs txtt" placeholder="请输入内容"></textarea>
+			<a class="mfs" href="javascript: dat.set(epc);">修改EPC</a>
+			<a class="mfs right" href="javascript: dat.set(use);">修改USER</a>
+
+			<div class="bfs"><br><br><br>TID :</div>
+			<div id="tid" class="noOut sfs" onclick="dat.setTxt(this);"></div>
+			<div class="bfs"><br>EPC :</div>
+			<div id="epc" class="noOut sfs" onclick="dat.setTxt(this);"></div>
+			<div class="bfs"><br>USER :</div>
+			<div id="use" class="noOut sfs" onclick="dat.setTxt(this);"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

@@ -4,176 +4,151 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
+import android.view.KeyEvent;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
-import com.invengo.lib.util.HexUtil;
+import com.invengo.rfd6c.cwthd.entity.Web;
+import com.invengo.rfd6c.cwthd.enums.EmUh;
+import com.invengo.rfd6c.cwthd.enums.EmUrl;
 
-import invengo.javaapi.core.BaseReader;
-import invengo.javaapi.core.IMessageNotification;
-import invengo.javaapi.handle.IMessageNotificationReceivedHandle;
-import invengo.javaapi.protocol.IRP1.IntegrateReaderManager;
-import invengo.javaapi.protocol.IRP1.PowerOff;
-import invengo.javaapi.protocol.IRP1.RXD_TagData;
-import invengo.javaapi.protocol.IRP1.ReadTag;
-import invengo.javaapi.protocol.IRP1.Reader;
+import tk.ziniulian.util.Str;
 
-public class Ma extends AppCompatActivity implements IMessageNotificationReceivedHandle {
-	private Reader rd = null;
-	private boolean isConnect = false;
-	private boolean isScanning = false;
-	private TextView tv;
-	private ReadTag.ReadMemoryBank bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_6C;
-
-	// 连接设备
-	private Runnable connectRa = new Runnable() {
-		@Override
-		public void run() {
-			isConnect = rd.connect();
-		}
-	};
-
-	// 断开设备
-	private Runnable disConnectRa = new Runnable() {
-		@Override
-		public void run() {
-			rd.send(new PowerOff());
-			if (isScanning) {
-				isScanning = false;
-			}
-			rd.disConnect();
-			isConnect = false;
-		}
-	};
-
-	// 扫描
-	private Runnable scanRa = new Runnable() {
-		@Override
-		public void run() {
-			// 测温标签
-			ReadTag rt = new ReadTag (bank);
-			rd.send(rt);
-		}
-	};
-
-	// 停止
-	private Runnable stopRa = new Runnable() {
-		@Override
-		public void run() {
-			rd.send(new PowerOff());
-			isScanning = false;
-		}
-	};
-
-	private Handler hd = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			tv.append(msg.obj.toString());
-			int offset = tv.getLineCount()*tv.getLineHeight();
-			if(offset > tv.getHeight()){
-				tv.scrollTo(0,offset - tv.getHeight());
-			}
-		}
-	};
+public class Ma extends AppCompatActivity {
+	private Web w = new Web(this);
+	private WebView wv;
+	private Handler uh = new UiHandler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ma);
 
-		tv = (TextView) findViewById(R.id.tv);
-		tv.setMovementMethod(ScrollingMovementMethod.getInstance());
+		// 读写器初始化
+		w.initRd();
 
-		// 标签模式切换
-		CheckBox cb = (CheckBox)findViewById(R.id.cb);
-		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked) {
-					bank = ReadTag.ReadMemoryBank.EPC_TID_TEMPERATURE;
-				} else {
-					bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_6C;
-				}
-			}
-		});
+		// 二维码初始化
+//		w.initQr();
 
-		// 清空按钮
-		Button btn = (Button) findViewById(R.id.btn);
-		btn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				tv.setText("");
-				tv.scrollTo(0, 0);
-			}
-		});
+		// 页面设置
+		wv = (WebView)findViewById(R.id.wv);
+		WebSettings ws = wv.getSettings();
+		ws.setDefaultTextEncodingName("UTF-8");
+		ws.setJavaScriptEnabled(true);
+//		wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+		wv.addJavascriptInterface(w, "rfdo");
 
-		// 读取按钮
-		final Button btnm = (Button) findViewById(R.id.btnm);
-		btnm.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (isConnect) {
-					if (isScanning) {
-						stop();
-						((Button)v).setText("读取");
-					} else {
-						scan();
-						((Button)v).setText("停止");
-					}
-				}
-			}
-		});
+		sendUrl(EmUrl.Home);	// 测试用_Test
+	}
 
-		rd = IntegrateReaderManager.getInstance();
-		if (rd != null) {
-			rd.onMessageNotificationReceived.add(this);
-			open();
-		}
+	@Override
+	protected void onResume() {
+		w.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		w.close();
+		super.onPause();
 	}
 
 	@Override
 	protected void onDestroy() {
-		close();
 		super.onDestroy();
 	}
 
-	private void open() {
-		if (!isConnect && rd != null) {
-			new Thread(connectRa).start();
-		}
-	}
-
-	private void close() {
-		if (isConnect) {
-			new Thread(disConnectRa).start();
-		}
-	}
-
-	private void scan() {
-		if (!isScanning && isConnect) {
-			isScanning = true;
-			new Thread(scanRa).start();
-		}
-	}
-
-	private void stop() {
-		if (isScanning && isConnect) {
-			new Thread(stopRa).start();
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_SOFT_RIGHT:
+				if (event.getRepeatCount() == 0) {
+					EmUrl e = getCurUi();
+					if (e != null) {
+						switch (getCurUi()) {
+							case Home:
+								w.rfidScan();
+								break;
+						}
+					}
+				}
+				return true;
+			case KeyEvent.KEYCODE_BACK:
+				EmUrl e = getCurUi();
+				if (e != null) {
+					switch (e) {
+						case Home:
+							return super.onKeyDown(keyCode, event);
+						default:
+							sendUrl(EmUrl.Back);
+							break;
+					}
+				} else {
+					wv.goBack();
+				}
+				return true;
+			default:
+				return super.onKeyDown(keyCode, event);
 		}
 	}
 
 	@Override
-	public void messageNotificationReceivedHandle(BaseReader baseReader, IMessageNotification iMessageNotification) {
-//		Log.i("----------" + iMessageNotification.getMessageType() + "----------", HexUtil.toHexString(iMessageNotification.getReceivedData()));
-		if (iMessageNotification instanceof RXD_TagData) {
-			RXD_TagData.ReceivedInfo ri = ((RXD_TagData) iMessageNotification).getReceivedMessage();
-			String s = HexUtil.toHexString(ri.getTID()) + " : " + ri.getTemperature() + "\n";
-			hd.sendMessage(hd.obtainMessage(1, s));
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_SOFT_RIGHT:
+				w.rfidStop();
+				return true;
+			default:
+				return super.onKeyUp(keyCode, event);
 		}
 	}
 
+	// 获取当前页面信息
+	private EmUrl getCurUi () {
+		try {
+			return EmUrl.valueOf(wv.getTitle());
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	// 页面跳转
+	public void sendUrl (String url) {
+//		Log.i("---", url);
+		uh.sendMessage(uh.obtainMessage(EmUh.Url.ordinal(), 0, 0, url));
+	}
+
+	// 页面跳转
+	public void sendUrl (EmUrl e) {
+		sendUrl(e.toString());
+	}
+
+	// 页面跳转
+	public void sendUrl (EmUrl e, String... args) {
+		sendUrl(Str.meg(e.toString(), args));
+	}
+
+	// 发送页面处理消息
+	public void sendUh (EmUh e) {
+		uh.sendMessage(uh.obtainMessage(e.ordinal()));
+	}
+
+	// 页面处理器
+	private class UiHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			EmUh e = EmUh.values()[msg.what];
+			switch (e) {
+				case Url:
+					wv.loadUrl((String)msg.obj);
+					break;
+				case Connected:
+					if (getCurUi() == EmUrl.Err) {
+						wv.goBack();
+					}
+				default:
+					break;
+			}
+		}
+	}
 }

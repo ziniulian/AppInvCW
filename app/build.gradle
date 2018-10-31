@@ -7,8 +7,8 @@ android {
         applicationId "com.invengo.rfd6c.cwthd"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,4 +36,6 @@ dependencies {
     compile files('libs/XC2910/com/invengo.util.jar')
     compile files('libs/XC2910/rfid/ch.ntb.usb-0.5.9.jar')
     compile files('libs/XC2910/rfid/invengo.irp1.jar')
+    compile files('libs/XC2910/bar/invengo.dev.barcode.jar')
+    compile files('libs/XC2910/bar/invengo.system.comm.jar')
 }
