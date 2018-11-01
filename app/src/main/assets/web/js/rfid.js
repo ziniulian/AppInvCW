@@ -1,9 +1,10 @@
 rfid = {
 	// 读
 	tid: 0,
+	timf: 100,	// 刷新间隔
 	scan: function () {
 		if (!this.tid) {
-			this.tid = setInterval(rfid.doScan, 100);
+			this.tid = setInterval(rfid.doScan, rfid.timf);
 		}
 	},
 	stop: function () {
@@ -37,5 +38,17 @@ rfid = {
 	},
 	hdWrt: function (ok) {
 		// console.log(ok);
+	},
+
+	// 其它
+	log: function (msg) {
+		rfdo.log(msg);
+	},
+
+	/***************************/
+
+	// 业务相关
+	getConfig: function () {
+		return rfdo.getConfig();
 	}
 };

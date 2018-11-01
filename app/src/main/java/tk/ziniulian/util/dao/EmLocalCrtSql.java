@@ -6,9 +6,9 @@ package tk.ziniulian.util.dao;
  */
 
 public enum EmLocalCrtSql {
-	sdDir("ziniulian/"),	// 数据库存储路径
+	sdDir("Invengo/CW/DB/"),	// 数据库存储路径
 
-	dbNam("test"),	// 数据库名
+	dbNam("cw"),	// 数据库名
 
 	Bkv(	// 基本键值对表
 		"create table Bkv(" +	// 表名

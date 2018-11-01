@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -27,8 +26,8 @@ public class Ma extends AppCompatActivity {
 		// 读写器初始化
 		w.initRd();
 
-		// 二维码初始化
-//		w.initQr();
+		// 数据库初始化
+		w.initDb();
 
 		// 页面设置
 		wv = (WebView)findViewById(R.id.wv);
@@ -38,7 +37,7 @@ public class Ma extends AppCompatActivity {
 //		wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 		wv.addJavascriptInterface(w, "rfdo");
 
-		sendUrl(EmUrl.Home);	// 测试用_Test
+		sendUrl(EmUrl.Home);
 	}
 
 	@Override
@@ -55,52 +54,8 @@ public class Ma extends AppCompatActivity {
 
 	@Override
 	protected void onDestroy() {
+		w.close();
 		super.onDestroy();
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-			case KeyEvent.KEYCODE_SOFT_RIGHT:
-				if (event.getRepeatCount() == 0) {
-					EmUrl e = getCurUi();
-					if (e != null) {
-						switch (getCurUi()) {
-							case Home:
-								w.rfidScan();
-								break;
-						}
-					}
-				}
-				return true;
-			case KeyEvent.KEYCODE_BACK:
-				EmUrl e = getCurUi();
-				if (e != null) {
-					switch (e) {
-						case Home:
-							return super.onKeyDown(keyCode, event);
-						default:
-							sendUrl(EmUrl.Back);
-							break;
-					}
-				} else {
-					wv.goBack();
-				}
-				return true;
-			default:
-				return super.onKeyDown(keyCode, event);
-		}
-	}
-
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-			case KeyEvent.KEYCODE_SOFT_RIGHT:
-				w.rfidStop();
-				return true;
-			default:
-				return super.onKeyUp(keyCode, event);
-		}
 	}
 
 	// 获取当前页面信息
@@ -114,7 +69,6 @@ public class Ma extends AppCompatActivity {
 
 	// 页面跳转
 	public void sendUrl (String url) {
-//		Log.i("---", url);
 		uh.sendMessage(uh.obtainMessage(EmUh.Url.ordinal(), 0, 0, url));
 	}
 

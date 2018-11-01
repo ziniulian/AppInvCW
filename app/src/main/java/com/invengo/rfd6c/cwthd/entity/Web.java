@@ -1,5 +1,6 @@
 package com.invengo.rfd6c.cwthd.entity;
 
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.google.gson.Gson;
@@ -24,6 +25,14 @@ public class Web {
 	private Gson gson = new Gson();
 	private DbLocal ldao = null;
 	private Ma ma;
+
+	// 配置信息
+	private Double tempL = 40.0;	// 温度下限 40 （包含）
+	private Double tempH = 70.0;	// 温度上限 70 （不包含）
+	private int timout = 60000;		// 读取超时（毫秒）
+	private int timp = 30000;		// 扫描间隔（毫秒）
+	private int timf = 1000;		// 刷新间隔（毫秒）
+	private String tb = "{}";		// 编号表
 
 	public Web (Ma m) {
 		this.ma = m;
@@ -67,6 +76,49 @@ public class Web {
 			}
 		});
 		rfd.init();
+	}
+
+	// 读取Double值
+	private Double dbReadK (String k, Double defv) {
+		String s = ldao.kvGet(k);
+		if (s == null) {
+			ldao.kvSet(k, defv + "");
+		} else {
+			defv = Double.parseDouble(s);
+		}
+		return defv;
+	}
+
+	// 读取String值
+	private String dbReadK (String k, String defv) {
+		String s = ldao.kvGet(k);
+		if (s == null) {
+			ldao.kvSet(k, defv);
+		} else {
+			defv = s;
+		}
+		return defv;
+	}
+
+	// 读取int值
+	private int dbReadK (String k, int defv) {
+		String s = ldao.kvGet(k);
+		if (s == null) {
+			ldao.kvSet(k, defv + "");
+		} else {
+			defv = Integer.parseInt(s);
+		}
+		return defv;
+	}
+
+	// 初始化数据库
+	public void initDb () {
+		timout = dbReadK("timout", timout);		// 读取超时
+		timp = dbReadK("timp", timp);		// 扫描间隔
+		timf = dbReadK("timf", timf);		// 刷新间隔
+		tempL = dbReadK("tempL", tempL);	// 温度下限
+		tempH = dbReadK("tempH", tempH);	// 温度上限
+		tb = dbReadK("tb", tb);		// 编号表
 	}
 
 	public void open() {
@@ -127,5 +179,42 @@ public class Web {
 	}
 
 /*------------------- 其它 ---------------------*/
+
+	@JavascriptInterface
+	public void log(String msg) {
+		Log.i("---- Web ----", msg);
+	}
+
+	@JavascriptInterface
+	public String getConfig() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+
+		sb.append("\"timf\":");
+		sb.append(timf);
+		sb.append(",");
+
+		sb.append("\"timp\":");
+		sb.append(timp);
+		sb.append(",");
+
+		sb.append("\"timout\":");
+		sb.append(timout);
+		sb.append(",");
+
+		sb.append("\"tempL\":");
+		sb.append(tempL);
+		sb.append(",");
+
+		sb.append("\"tempH\":");
+		sb.append(tempH);
+		sb.append(",");
+
+		sb.append("\"tb\":");
+		sb.append(tb);
+
+		sb.append("}");
+		return sb.toString();
+	}
 
 }
