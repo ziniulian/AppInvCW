@@ -20,19 +20,19 @@ public class DbLocal extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		for (EmLocalCrtSql e : EmLocalCrtSql.values()) {
-			switch (e.name()) {
-				case "sdDir":
-				case "dbNam":
-					break;
-				default:
-					db.execSQL(e.toString());
-					break;
+			if (!(e.name().equals("sdDir") || e.name().equals("sdDir"))) {
+				db.execSQL(e.toString());
 			}
 		}
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
+	public void close() {
+		this.getWritableDatabase().close();
+		this.getReadableDatabase().close();
+	}
 
 	private String getStr (Cursor c, int i) {
 		String s = null;

@@ -8,6 +8,10 @@ import com.invengo.rfd6c.cwthd.Ma;
 import com.invengo.rfd6c.cwthd.enums.EmUh;
 import com.invengo.rfd6c.cwthd.enums.EmUrl;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import tk.ziniulian.job.rfid.EmCb;
 import tk.ziniulian.job.rfid.EmPushMod;
 import tk.ziniulian.job.rfid.InfTagListener;
@@ -27,16 +31,15 @@ public class Web {
 	private Ma ma;
 
 	// 配置信息
-	private Double tempL = 40.0;	// 温度下限 40 （包含）
-	private Double tempH = 70.0;	// 温度上限 70 （不包含）
-	private int timout = 60000;		// 读取超时（毫秒）
+	private Double tempL = 27.0;	// 温度下限 40 （包含）
+	private Double tempH = 30.0;	// 温度上限 70 （不包含）
+	private int timout = 20000;		// 读取超时（毫秒）
 	private int timp = 30000;		// 扫描间隔（毫秒）
 	private int timf = 1000;		// 刷新间隔（毫秒）
 	private String tb = "{}";		// 编号表
 
 	public Web (Ma m) {
 		this.ma = m;
-		ldao = new DbLocal(m);
 	}
 
 	// 读写器设置
@@ -113,6 +116,7 @@ public class Web {
 
 	// 初始化数据库
 	public void initDb () {
+		ldao = new DbLocal(ma);
 		timout = dbReadK("timout", timout);		// 读取超时
 		timp = dbReadK("timp", timp);		// 扫描间隔
 		timf = dbReadK("timf", timf);		// 刷新间隔
@@ -121,12 +125,64 @@ public class Web {
 		tb = dbReadK("tb", tb);		// 编号表
 	}
 
+	// 平板设备串口控制
+	private boolean XC290xGPIOControl(String str) {
+		boolean result = false;
+		/*
+		* 91 ： 串口上电（21）
+		* 90 ： 串口断电（21）
+		* 51 ： 红灯亮（120）
+		* 50 ： 红灯灭（120）
+		* 61 ： 绿灯亮（127）
+		* 60 ： 绿灯灭（127）
+		* 71 ： 天线1开（42）
+		* 70 ： 天线1关（42）
+		* 81 ： 天线2开（43）
+		* 80 ： 天线2关（43）
+		* */
+		File file = new File("/proc/c620_ledctrl");
+		FileWriter fr = null;
+		try {
+			fr = new FileWriter(file);
+			fr.write(str);
+			result = true;
+		} catch (Exception e) {
+			result = false;
+		} finally {
+			try {
+				if (null != fr) {
+					fr.close();
+				}
+			} catch (IOException e) {
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	// 关闭数据库
+	public void closeDb() {
+		ldao.close();
+	}
+
 	public void open() {
-		rfd.open();
+		if (XC290xGPIOControl("91")) {
+			if (XC290xGPIOControl("70")) {
+				if (XC290xGPIOControl("80")) {
+					// TODO: 2018/11/12 启动电源指示灯
+					rfd.open();
+				}
+			}
+		}
 	}
 
 	public void close() {
 		rfd.close();
+		XC290xGPIOControl("70");
+		XC290xGPIOControl("80");
+		XC290xGPIOControl("90");
+		// TODO: 2018/11/12 关闭电源指示灯
+		// TODO: 2018/11/12 关闭警告指示灯
 	}
 
 /*------------------- RFID ---------------------*/
@@ -163,6 +219,7 @@ public class Web {
 
 /*------------------- 数据库 ---------------------*/
 
+
 	@JavascriptInterface
 	public String kvGet(String k) {
 		return ldao.kvGet(k);
@@ -177,6 +234,7 @@ public class Web {
 	public void kvDel(String k) {
 		ldao.kvDel(k);
 	}
+
 
 /*------------------- 其它 ---------------------*/
 

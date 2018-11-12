@@ -5,7 +5,6 @@ import invengo.javaapi.core.IMessage;
 import invengo.javaapi.core.IMessageNotification;
 import invengo.javaapi.core.MemoryBank;
 import invengo.javaapi.handle.IMessageNotificationReceivedHandle;
-import invengo.javaapi.protocol.IRP1.IntegrateReaderManager;
 import invengo.javaapi.protocol.IRP1.PowerOff;
 import invengo.javaapi.protocol.IRP1.RXD_TagData;
 import invengo.javaapi.protocol.IRP1.ReadTag;
@@ -165,7 +164,8 @@ public class Rd extends Base implements IMessageNotificationReceivedHandle {
 	@Override
 	public void init() {
 		if (rd == null) {
-			rd = IntegrateReaderManager.getInstance();
+//			rd = new Reader("CWxc2910", "RS232", "/dev/ttyS4,115200");
+			rd = new Reader("CWxc2910", "RS232", "/dev/ttyMT1,115200");
 			isConnect = false;
 			isScanning = false;
 			if (rd == null) {
@@ -223,34 +223,30 @@ public class Rd extends Base implements IMessageNotificationReceivedHandle {
 			if (assign) {
 				r.bt.setTid(tid);
 			}
-			switch (bankNam) {
-				case "epc":
-					if (isHex()) {
-						r.bt.setEpc(dat);
-					} else {
-						r.bt.setEpcDat(dat);
-					}
-					if (assign) {
-						r.msg = new WriteEpc(antenna, getPwd(), r.bt.getEpc(), r.bt.getTid(), MemoryBank.TIDMemory);
-					} else {
-						r.msg = new WriteEpc(antenna, getPwd(), r.bt.getEpc());
-					}
-					break;
-				case "use":
-					if (isHex()) {
-						r.bt.setUse(dat);
-					} else {
-						r.bt.setUseDat(dat);
-					}
-					if (assign) {
-						r.msg = new WriteUserData_6C(antenna, getPwd(), (byte)0, r.bt.getUse(), r.bt.getTid(), MemoryBank.TIDMemory);
-					} else {
-						r.msg = new WriteUserData_6C(antenna, getPwd(), 0, r.bt.getUse());
-					}
-					break;
-				default:
-					isReading = false;
-					return;
+			if (bankNam.equals("epc")) {
+				if (isHex()) {
+					r.bt.setEpc(dat);
+				} else {
+					r.bt.setEpcDat(dat);
+				}
+				if (assign) {
+					r.msg = new WriteEpc(antenna, getPwd(), r.bt.getEpc(), r.bt.getTid(), MemoryBank.TIDMemory);
+				} else {
+					r.msg = new WriteEpc(antenna, getPwd(), r.bt.getEpc());
+				}
+			} else if (bankNam.equals("use")) {
+				if (isHex()) {
+					r.bt.setUse(dat);
+				} else {
+					r.bt.setUseDat(dat);
+				}
+				if (assign) {
+					r.msg = new WriteUserData_6C(antenna, getPwd(), (byte)0, r.bt.getUse(), r.bt.getTid(), MemoryBank.TIDMemory);
+				} else {
+					r.msg = new WriteUserData_6C(antenna, getPwd(), 0, r.bt.getUse());
+				}
+			} else {
+				isReading = false;
 			}
 			new Thread(r).start();
 		}
@@ -289,25 +285,20 @@ public class Rd extends Base implements IMessageNotificationReceivedHandle {
 
 	// 设置bank
 	public boolean setBank (String bankNam) {
-		switch (bankNam) {
-			case "epc":
-				bank = ReadTag.ReadMemoryBank.EPC_6C;
-				break;
-			case "tid":
-				bank = ReadTag.ReadMemoryBank.TID_6C;
-				break;
-			case "use":
-			case "all":
-				bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_6C;
-				break;
-			case "bck":
-				bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_Reserved_6C_ID_UserData_6B;
-				break;
-			case "tmp":
-				bank = ReadTag.ReadMemoryBank.EPC_TID_TEMPERATURE;
-				break;
-			default:
-				return false;
+		if (bankNam.equals("epc")) {
+			bank = ReadTag.ReadMemoryBank.EPC_6C;
+		} else if (bankNam.equals("tid")) {
+			bank = ReadTag.ReadMemoryBank.TID_6C;
+		} else if (bankNam.equals("use")) {
+			bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_6C;
+		} else if (bankNam.equals("all")) {
+			bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_6C;
+		} else if (bankNam.equals("bck")) {
+			bank = ReadTag.ReadMemoryBank.EPC_TID_UserData_Reserved_6C_ID_UserData_6B;
+		} else if (bankNam.equals("tmp")) {
+			bank = ReadTag.ReadMemoryBank.EPC_TID_TEMPERATURE;
+		} else {
+			return false;
 		}
 		if (bankNam.equals("tmp")) {
 			tagc = T6Ctemperature.class;

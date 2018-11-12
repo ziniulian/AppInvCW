@@ -16,5 +16,6 @@ public enum EmCb {
 	Connected,		// 与RFID设备已建立连接
 	DisConnected,	// 与RFID设备已断开连接
 	ErrConnect,		// 与RFID设备连接失败
+	ErrConnect2,		// 与RFID设备连接失败2
 	ErrRead			// 读取失败
 }

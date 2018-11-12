@@ -1,9 +1,10 @@
 package com.invengo.rfd6c.cwthd;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -13,7 +14,7 @@ import com.invengo.rfd6c.cwthd.enums.EmUrl;
 
 import tk.ziniulian.util.Str;
 
-public class Ma extends AppCompatActivity {
+public class Ma extends Activity {
 	private Web w = new Web(this);
 	private WebView wv;
 	private Handler uh = new UiHandler();
@@ -31,6 +32,7 @@ public class Ma extends AppCompatActivity {
 
 		// 页面设置
 		wv = (WebView)findViewById(R.id.wv);
+		wv.setWebChromeClient(new WebChromeClient());
 		WebSettings ws = wv.getSettings();
 		ws.setDefaultTextEncodingName("UTF-8");
 		ws.setJavaScriptEnabled(true);
@@ -49,6 +51,7 @@ public class Ma extends AppCompatActivity {
 	@Override
 	protected void onPause() {
 		w.close();
+		w.closeDb();
 		super.onPause();
 	}
 

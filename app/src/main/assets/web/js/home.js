@@ -7,6 +7,8 @@ function init() {
 
 	dat.initData();		// 数据初始化
 	dat.tid = setTimeout(dat.run, 3000);	// 准备运行
+
+	// TODO: 监控警告 ， 控制警告指示灯
 }
 
 rfid.hdScan = function (arr) {

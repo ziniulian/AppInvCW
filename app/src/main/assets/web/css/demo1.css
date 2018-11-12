@@ -1,7 +1,3 @@
-html {
-	font-size: 8px;
-}
-
 .boso {
 	color: #00195C;
 	background-color: #00A0B6;
@@ -56,8 +52,7 @@ html {
 .out4 {
 	width: 30%;
 	height: 100%;
-	/*border: solid 0.1rem #58335E;*/
-	border: solid 0.2rem #58335E;
+	border: solid 0.1rem #58335E;
 	background-color: #BEF7FF;
 }
 
@@ -118,8 +113,8 @@ html {
 
 .dzout {
 	width: 95%;
-	padding: 0 1%;
 	height: 40%;
+	padding: 0 1%;
 	text-align: center;
 
 	background-repeat: no-repeat;
@@ -168,18 +163,20 @@ html {
 
 .dzi {
 	position: absolute;
-	top: 24%;
-	left: 28%;
-	width: 47%;
+	top: 0;
+	left: 0;
+	width: 55%;
 	height: 3rem;
+	margin: 97% 0 0 22%;
 }
 
 .dzo {
 	position: absolute;
-	top: 51%;
-	left: 28%;
-	width: 47%;
+	top: 0;
+	left: 0;
+	width: 55%;
 	height: 3rem;
+	margin: 217% 0 0 22%;
 }
 
 .out13 {
@@ -234,18 +231,20 @@ html {
 
 .qi {
 	position: absolute;
-	top: 17%;
-	left: 26%;
+	top: 0;
+	left: 0;
 	width: 50%;
 	height: 3rem;
+	margin: 78% 0 0 25%;
 }
 
 .qo {
 	position: absolute;
-	top: 44%;
-	left: 26%;
+	top: 0;
+	left: 0;
 	width: 50%;
 	height: 3rem;
+	margin: 209% 0 0 25%;
 }
 
 .kmout {
@@ -268,16 +267,18 @@ html {
 
 .kmi {
 	position: absolute;
-	top: 18%;
-	left: 17%;
+	top: 0;
+	left: 0;
 	width: 63%;
 	height: 3rem;
+	margin: 105% 0 0 17%;
 }
 
 .kmo {
 	position: absolute;
-	top: 51.5%;
-	left: 17%;
+	top: 0;
+	left: 0;
 	width: 63%;
 	height: 3rem;
+	margin: 296% 0 0 17%;
 }

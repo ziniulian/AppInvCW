@@ -11,7 +11,7 @@ import tk.ziniulian.job.rfid.tag.T6C;
  */
 
 public abstract class Base implements InfBaseRfid {
-	protected Map<String, T6C> ts = new HashMap<>();	// 标签集
+	protected Map<String, T6C> ts = new HashMap<String, T6C>();	// 标签集
 	private InfTagListener itl = null;
 	private boolean hex = false;	// 使用二进制数据
 	private EmPushMod pm = EmPushMod.Event;
