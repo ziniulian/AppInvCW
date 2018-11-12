@@ -58,10 +58,14 @@ public class Rd extends Base implements IMessageNotificationReceivedHandle {
 				isScanning = false;
 				cb(EmCb.Stopped);
 			}
-			rd.disConnect();
-			isConnect = false;
-			isReading = false;
-			cb(EmCb.DisConnected);
+			try {
+				rd.disConnect();
+				isConnect = false;
+				isReading = false;
+				cb(EmCb.DisConnected);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	};
 

@@ -50,5 +50,20 @@ rfid = {
 	// 业务相关
 	getConfig: function () {
 		return rfdo.getConfig();
+	},
+
+	// 停止循环
+	over: function () {
+		dat.stop();
+	},
+
+	// 警告指示灯
+	alarmLed: function (b) {
+		rfdo.alarmLed(b);
+	},
+
+	// 电源指示灯
+	powerLed: function (d) {
+		rfdo.powerLed(d);
 	}
 };

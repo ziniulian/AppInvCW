@@ -11,6 +11,7 @@ public enum EmUrl {
 	RfStoped("javascript: rfid.stop();"),
 	RfWrtOk("javascript: rfid.hdWrt(true);"),
 	RfWrtErr("javascript: rfid.hdWrt(false);"),
+	RfOver("javascript: rfid.over();"),
 
 	// 主页
 	Home("file:///android_asset/web/home.html"),

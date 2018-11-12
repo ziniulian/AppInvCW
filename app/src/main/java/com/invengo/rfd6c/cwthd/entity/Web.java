@@ -38,6 +38,10 @@ public class Web {
 	private int timf = 1000;		// 刷新间隔（毫秒）
 	private String tb = "{}";		// 编号表
 
+	// 指示灯
+	private boolean aledt = false;	// 警告指示灯状态
+	private int pledt = 0;		// 电源指示灯状态		0,关; 1,开;
+
 	public Web (Ma m) {
 		this.ma = m;
 	}
@@ -165,24 +169,32 @@ public class Web {
 		ldao.close();
 	}
 
+	// 启动
 	public void open() {
 		if (XC290xGPIOControl("91")) {
-			if (XC290xGPIOControl("70")) {
-				if (XC290xGPIOControl("80")) {
-					// TODO: 2018/11/12 启动电源指示灯
-					rfd.open();
+			if (XC290xGPIOControl("50")) {
+				if (XC290xGPIOControl("70")) {
+					if (XC290xGPIOControl("80")) {
+						if (XC290xGPIOControl("61")) {
+							pledt = 1;
+							rfd.open();
+						}
+					}
 				}
 			}
 		}
 	}
 
+	// 停止
 	public void close() {
+		ma.sendUrl(EmUrl.RfOver);
 		rfd.close();
+		pledt = 2;
+		XC290xGPIOControl("50");
 		XC290xGPIOControl("70");
 		XC290xGPIOControl("80");
 		XC290xGPIOControl("90");
-		// TODO: 2018/11/12 关闭电源指示灯
-		// TODO: 2018/11/12 关闭警告指示灯
+		XC290xGPIOControl("60");
 	}
 
 /*------------------- RFID ---------------------*/
@@ -273,6 +285,37 @@ public class Web {
 
 		sb.append("}");
 		return sb.toString();
+	}
+
+	// 警告指示灯
+	@JavascriptInterface
+	public void alarmLed(boolean show) {
+		if (!aledt && show) {
+			aledt = XC290xGPIOControl("51");
+		} else if (aledt && !show) {
+			XC290xGPIOControl("50");
+			aledt = false;
+		}
+	}
+
+	// 电源指示灯
+	@JavascriptInterface
+	public void powerLed(int d) {
+		if (pledt != 2) {
+			if (d == 1) {
+				pledt = 0;
+			} else if (d == 0) {
+				pledt = 1;
+			}
+			if (pledt == 0) {
+				if (XC290xGPIOControl("61")) {
+					pledt = 1;
+				}
+			} else if (pledt == 1) {
+				XC290xGPIOControl("60");
+				pledt = 0;
+			}
+		}
 	}
 
 }

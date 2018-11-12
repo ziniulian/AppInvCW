@@ -29,11 +29,6 @@ public class DbLocal extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
-	public void close() {
-		this.getWritableDatabase().close();
-		this.getReadableDatabase().close();
-	}
-
 	private String getStr (Cursor c, int i) {
 		String s = null;
 		s = c.getString(i);

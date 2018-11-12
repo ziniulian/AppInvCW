@@ -51,7 +51,6 @@ public class Ma extends Activity {
 	@Override
 	protected void onPause() {
 		w.close();
-		w.closeDb();
 		super.onPause();
 	}
 

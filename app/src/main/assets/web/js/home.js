@@ -7,8 +7,6 @@ function init() {
 
 	dat.initData();		// 数据初始化
 	dat.tid = setTimeout(dat.run, 3000);	// 准备运行
-
-	// TODO: 监控警告 ， 控制警告指示灯
 }
 
 rfid.hdScan = function (arr) {
@@ -19,9 +17,15 @@ rfid.hdScan = function (arr) {
 			dat.flush(o,  arr[i].tmp);
 		}
 	}
+
+	dat.checkAlarm();	// 监控警告
+
 	if (rfid.tid === 0) {
 		if (dat.tid === -1) {
 			dat.tid = setTimeout(dat.run, dat.config.timp);
+			rfid.powerLed (1);	// 电源灯常亮
+		} else {
+			rfid.powerLed (0);	// 电源灯常灭
 		}
 	} else {
 		o = Date.now() - dat.tim;
@@ -155,6 +159,16 @@ dat = {
 			}
 		}
 		return r;
+	},
+
+	// 警告监控
+	checkAlarm: function () {
+		if (alarmDoe.childNodes.length > 0) {
+			rfid.alarmLed (true);
+		} else {
+			rfid.alarmLed (false);
+		}
+		rfid.powerLed (2);	// 电源灯闪烁
 	},
 
 	// 结束
