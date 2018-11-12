@@ -31,16 +31,17 @@ public class Web {
 	private Ma ma;
 
 	// 配置信息
-	private Double tempL = 27.0;	// 温度下限 40 （包含）
-	private Double tempH = 30.0;	// 温度上限 70 （不包含）
-	private int timout = 20000;		// 读取超时（毫秒）
-	private int timp = 30000;		// 扫描间隔（毫秒）
+	private Double tempL = 40.0;	// 温度下限 40 （包含）	安全温度
+	private Double tempH = 70.0;	// 温度上限 70 （不包含）	警告温度
+	private int timout = 30000;		// 读取超时（毫秒）
+	private int timp = 100;			// 扫描间隔（毫秒）
 	private int timf = 1000;		// 刷新间隔（毫秒）
 	private String tb = "{}";		// 编号表
 
 	// 指示灯
 	private boolean aledt = false;	// 警告指示灯状态
 	private int pledt = 0;		// 电源指示灯状态		0,关; 1,开;
+	private int antt = 42;		// 天线状态
 
 	public Web (Ma m) {
 		this.ma = m;
@@ -173,10 +174,11 @@ public class Web {
 	public void open() {
 		if (XC290xGPIOControl("91")) {
 			if (XC290xGPIOControl("50")) {
-				if (XC290xGPIOControl("70")) {
-					if (XC290xGPIOControl("80")) {
+				if (XC290xGPIOControl("80")) {
+					if (XC290xGPIOControl("71")) {
 						if (XC290xGPIOControl("61")) {
 							pledt = 1;
+							antt = 42;
 							rfd.open();
 						}
 					}
@@ -314,6 +316,24 @@ public class Web {
 			} else if (pledt == 1) {
 				XC290xGPIOControl("60");
 				pledt = 0;
+			}
+		}
+	}
+
+	// 切换天线
+	@JavascriptInterface
+	public void cAnt() {
+		if (antt == 42) {
+			if (XC290xGPIOControl("70")) {
+				if (XC290xGPIOControl("81")) {
+					antt = 43;
+				}
+			}
+		} else if (antt == 43) {
+			if (XC290xGPIOControl("80")) {
+				if (XC290xGPIOControl("71")) {
+					antt = 42;
+				}
 			}
 		}
 	}

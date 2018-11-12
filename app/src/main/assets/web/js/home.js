@@ -22,8 +22,9 @@ rfid.hdScan = function (arr) {
 
 	if (rfid.tid === 0) {
 		if (dat.tid === -1) {
-			dat.tid = setTimeout(dat.run, dat.config.timp);
+			rfid.cAnt();	// 切换天线
 			rfid.powerLed (1);	// 电源灯常亮
+			dat.tid = setTimeout(dat.run, dat.config.timp);
 		} else {
 			rfid.powerLed (0);	// 电源灯常灭
 		}

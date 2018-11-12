@@ -65,5 +65,10 @@ rfid = {
 	// 电源指示灯
 	powerLed: function (d) {
 		rfdo.powerLed(d);
+	},
+
+	// 切换天线
+	cAnt: function () {
+		rfdo.cAnt();
 	}
 };
