@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Setting</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<link href="css/demo1.css" rel="stylesheet" type="text/css" />
+		<script src="js/rfid.js"></script>
+		<script src="js/setting.js"></script>
+
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso Lc_noadr">
+			<div class="titleOut">
+				<div class="midSub titlePic"></div><!--
+				--><div class="midSub bfs title">参数设置</div><!--
+				--><div class="set_title sfs">
+					<div class="midTop sfs"></div><!--
+					--><div id="memoDeo" class="midSub mfs memo"></div><!--
+					--><div id="savDeo" class="midSub mfs btn">保存</div><!--
+					--><div id="bckDeo" class="midSub mfs btn">返回</div>
+				</div>
+			</div>
+			<hr class="hr1" />
+			<div class="out1"></div>
+			<div id="outter" class="set_out">
+				<table>
+					<tbody>
+						<tr>
+							<td class="k">安全温度 ： </td>
+							<td><input id="tempL" type="number" min="0"  step="0.01" placeholder="请输入安全温度值" onfocus="dat.scd(this);" onchange="dat.setTemp(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">警告温度 ： </td>
+							<td><input id="tempH" type="number" min="0"  step="0.01" placeholder="请输入警告温度值" onfocus="dat.scd(this);" onchange="dat.setTemp(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">超时（毫秒） ： </td>
+							<td><input id="timout" type="number" min="0"  step="1" placeholder="请输入超时时间（300 ~ 120000）" onfocus="dat.scd(this);" onchange="dat.setTim(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">DZ1</td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_U_I ： </td>
+							<td><input id="DZ1_U_I" type="text" size="6" placeholder="请输入 DZ1_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_U_O ： </td>
+							<td><input id="DZ1_U_O" type="text" size="6" placeholder="请输入 DZ1_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_V_I ： </td>
+							<td><input id="DZ1_V_I" type="text" size="6" placeholder="请输入 DZ1_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_V_O ： </td>
+							<td><input id="DZ1_V_O" type="text" size="6" placeholder="请输入 DZ1_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_W_I ： </td>
+							<td><input id="DZ1_W_I" type="text" size="6" placeholder="请输入 DZ1_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ1_W_O ： </td>
+							<td><input id="DZ1_W_O" type="text" size="6" placeholder="请输入 DZ1_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">DZ2</td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_U_I ： </td>
+							<td><input id="DZ2_U_I" type="text" size="6" placeholder="请输入 DZ2_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_U_O ： </td>
+							<td><input id="DZ2_U_O" type="text" size="6" placeholder="请输入 DZ2_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_V_I ： </td>
+							<td><input id="DZ2_V_I" type="text" size="6" placeholder="请输入 DZ2_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_V_O ： </td>
+							<td><input id="DZ2_V_O" type="text" size="6" placeholder="请输入 DZ2_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_W_I ： </td>
+							<td><input id="DZ2_W_I" type="text" size="6" placeholder="请输入 DZ2_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ2_W_O ： </td>
+							<td><input id="DZ2_W_O" type="text" size="6" placeholder="请输入 DZ2_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">DZ3</td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_U_I ： </td>
+							<td><input id="DZ3_U_I" type="text" size="6" placeholder="请输入 DZ3_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_U_O ： </td>
+							<td><input id="DZ3_U_O" type="text" size="6" placeholder="请输入 DZ3_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_V_I ： </td>
+							<td><input id="DZ3_V_I" type="text" size="6" placeholder="请输入 DZ3_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_V_O ： </td>
+							<td><input id="DZ3_V_O" type="text" size="6" placeholder="请输入 DZ3_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_W_I ： </td>
+							<td><input id="DZ3_W_I" type="text" size="6" placeholder="请输入 DZ3_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ3_W_O ： </td>
+							<td><input id="DZ3_W_O" type="text" size="6" placeholder="请输入 DZ3_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">DZ4</td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_U_I ： </td>
+							<td><input id="DZ4_U_I" type="text" size="6" placeholder="请输入 DZ4_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_U_O ： </td>
+							<td><input id="DZ4_U_O" type="text" size="6" placeholder="请输入 DZ4_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_V_I ： </td>
+							<td><input id="DZ4_V_I" type="text" size="6" placeholder="请输入 DZ4_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_V_O ： </td>
+							<td><input id="DZ4_V_O" type="text" size="6" placeholder="请输入 DZ4_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_W_I ： </td>
+							<td><input id="DZ4_W_I" type="text" size="6" placeholder="请输入 DZ4_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ4_W_O ： </td>
+							<td><input id="DZ4_W_O" type="text" size="6" placeholder="请输入 DZ4_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">DZ5</td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_U_I ： </td>
+							<td><input id="DZ5_U_I" type="text" size="6" placeholder="请输入 DZ5_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_U_O ： </td>
+							<td><input id="DZ5_U_O" type="text" size="6" placeholder="请输入 DZ5_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_V_I ： </td>
+							<td><input id="DZ5_V_I" type="text" size="6" placeholder="请输入 DZ5_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_V_O ： </td>
+							<td><input id="DZ5_V_O" type="text" size="6" placeholder="请输入 DZ5_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_W_I ： </td>
+							<td><input id="DZ5_W_I" type="text" size="6" placeholder="请输入 DZ5_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">DZ5_W_O ： </td>
+							<td><input id="DZ5_W_O" type="text" size="6" placeholder="请输入 DZ5_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">Q1</td>
+						</tr>
+						<tr>
+							<td class="k">Q1_U_I ： </td>
+							<td><input id="Q1_U_I" type="text" size="6" placeholder="请输入 Q1_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q1_U_O ： </td>
+							<td><input id="Q1_U_O" type="text" size="6" placeholder="请输入 Q1_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q1_V_I ： </td>
+							<td><input id="Q1_V_I" type="text" size="6" placeholder="请输入 Q1_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q1_V_O ： </td>
+							<td><input id="Q1_V_O" type="text" size="6" placeholder="请输入 Q1_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q1_W_I ： </td>
+							<td><input id="Q1_W_I" type="text" size="6" placeholder="请输入 Q1_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q1_W_O ： </td>
+							<td><input id="Q1_W_O" type="text" size="6" placeholder="请输入 Q1_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">Q2</td>
+						</tr>
+						<tr>
+							<td class="k">Q2_U_I ： </td>
+							<td><input id="Q2_U_I" type="text" size="6" placeholder="请输入 Q2_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q2_U_O ： </td>
+							<td><input id="Q2_U_O" type="text" size="6" placeholder="请输入 Q2_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q2_V_I ： </td>
+							<td><input id="Q2_V_I" type="text" size="6" placeholder="请输入 Q2_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q2_V_O ： </td>
+							<td><input id="Q2_V_O" type="text" size="6" placeholder="请输入 Q2_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q2_W_I ： </td>
+							<td><input id="Q2_W_I" type="text" size="6" placeholder="请输入 Q2_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">Q2_W_O ： </td>
+							<td><input id="Q2_W_O" type="text" size="6" placeholder="请输入 Q2_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">KM1</td>
+						</tr>
+						<tr>
+							<td class="k">KM1_U_I ： </td>
+							<td><input id="KM1_U_I" type="text" size="6" placeholder="请输入 KM1_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM1_U_O ： </td>
+							<td><input id="KM1_U_O" type="text" size="6" placeholder="请输入 KM1_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM1_V_I ： </td>
+							<td><input id="KM1_V_I" type="text" size="6" placeholder="请输入 KM1_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM1_V_O ： </td>
+							<td><input id="KM1_V_O" type="text" size="6" placeholder="请输入 KM1_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM1_W_I ： </td>
+							<td><input id="KM1_W_I" type="text" size="6" placeholder="请输入 KM1_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM1_W_O ： </td>
+							<td><input id="KM1_W_O" type="text" size="6" placeholder="请输入 KM1_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+						<tr>
+							<td class="t">KM2</td>
+						</tr>
+						<tr>
+							<td class="k">KM2_U_I ： </td>
+							<td><input id="KM2_U_I" type="text" size="6" placeholder="请输入 KM2_U_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM2_U_O ： </td>
+							<td><input id="KM2_U_O" type="text" size="6" placeholder="请输入 KM2_U_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM2_V_I ： </td>
+							<td><input id="KM2_V_I" type="text" size="6" placeholder="请输入 KM2_V_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM2_V_O ： </td>
+							<td><input id="KM2_V_O" type="text" size="6" placeholder="请输入 KM2_V_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM2_W_I ： </td>
+							<td><input id="KM2_W_I" type="text" size="6" placeholder="请输入 KM2_W_I 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+						<tr>
+							<td class="k">KM2_W_O ： </td>
+							<td><input id="KM2_W_O" type="text" size="6" placeholder="请输入 KM2_W_O 标签的TID的最后六位" onfocus="dat.scd(this);" onchange="dat.setTid(this);"/></td>
+						</tr>
+
+					</tbody>
+				</table>
+				<div class="set_foot"></div>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

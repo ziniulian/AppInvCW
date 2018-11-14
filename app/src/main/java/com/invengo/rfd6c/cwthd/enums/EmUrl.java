@@ -11,10 +11,12 @@ public enum EmUrl {
 	RfStoped("javascript: rfid.stop();"),
 	RfWrtOk("javascript: rfid.hdWrt(true);"),
 	RfWrtErr("javascript: rfid.hdWrt(false);"),
-	RfOver("javascript: rfid.over();"),
+	RfOver("javascript: dat.stop();"),
+	RfRun("javascript: dat.run();"),
 
 	// 主页
 	Home("file:///android_asset/web/home.html"),
+	Setting("file:///android_asset/web/setting.html"),
 	Back("javascript: dat.back();"),
 	Err("file:///android_asset/web/err.html");
 

@@ -6,6 +6,7 @@
 /* ----- 标题 ------ */
 
 .titleOut {
+	position: relative;
 	height: 12%;
 }
 
@@ -281,4 +282,72 @@
 	width: 63%;
 	height: 3rem;
 	margin: 296% 0 0 17%;
+}
+
+/* ----- 设置页面 ------ */
+
+.set_title {
+	position: absolute;
+	height: 100%;
+	top: 0;
+	right: 0;
+}
+
+.memo {
+	margin-right: 3rem;
+	text-align: center;
+	color: red;
+	font-style: italic;
+	font-weight: bolder;
+}
+
+.btn {
+	padding: 0.3rem 1rem;
+	margin-right: 2rem;
+	font-weight: bolder;
+	background-color: #BEF7FF;
+}
+
+.btnscd {
+	background-color: yellow;
+	/*border: solid 0.2rem #58335E;*/
+}
+
+.set_out {
+	height: 82%;
+	width: 96%;
+	margin: 0 auto;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.set_out table {
+	width: 100%;
+}
+
+.set_out td {
+	font-size: 1.5rem;
+}
+
+.set_out .k {
+	width: 25%;
+	text-align: right;
+	font-weight: bolder;
+	line-height: 2.5;	
+}
+
+.set_out .t {
+	font-size: 1.8rem;
+	font-weight: bolder;
+}
+
+.set_out input {
+	width: 88%;
+	font-size: 1.4rem;
+	padding: 0.3rem;
+	background-color: #BEF7FF;
+}
+
+.set_foot {
+	height: 80%;
 }

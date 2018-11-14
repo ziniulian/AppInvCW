@@ -3,7 +3,6 @@ package com.invengo.rfd6c.cwthd.entity;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
-import com.google.gson.Gson;
 import com.invengo.rfd6c.cwthd.Ma;
 import com.invengo.rfd6c.cwthd.enums.EmUh;
 import com.invengo.rfd6c.cwthd.enums.EmUrl;
@@ -26,7 +25,7 @@ import tk.ziniulian.util.dao.DbLocal;
 
 public class Web {
 	private Rd rfd = new Rd();
-	private Gson gson = new Gson();
+//	private Gson gson = new Gson();
 	private DbLocal ldao = null;
 	private Ma ma;
 
@@ -42,6 +41,8 @@ public class Web {
 	private boolean aledt = false;	// 警告指示灯状态
 	private int pledt = 0;		// 电源指示灯状态		0,关; 1,开;
 	private int antt = 42;		// 天线状态
+
+	private boolean runAble = false;	// 可用js启动的标记
 
 	public Web (Ma m) {
 		this.ma = m;
@@ -130,6 +131,11 @@ public class Web {
 		tb = dbReadK("tb", tb);		// 编号表
 	}
 
+	// 关闭数据库
+	public void closeDb() {
+		ldao.close();
+	}
+
 	// 平板设备串口控制
 	private boolean XC290xGPIOControl(String str) {
 		boolean result = false;
@@ -165,11 +171,6 @@ public class Web {
 		return result;
 	}
 
-	// 关闭数据库
-	public void closeDb() {
-		ldao.close();
-	}
-
 	// 启动
 	public void open() {
 		if (XC290xGPIOControl("91")) {
@@ -189,7 +190,7 @@ public class Web {
 
 	// 停止
 	public void close() {
-		ma.sendUrl(EmUrl.RfOver);
+		runAble = false;
 		rfd.close();
 		pledt = 2;
 		XC290xGPIOControl("50");
@@ -251,6 +252,16 @@ public class Web {
 
 
 /*------------------- 其它 ---------------------*/
+
+	public Web setRunAble(boolean runAble) {
+		this.runAble = runAble;
+		return this;
+	}
+
+	@JavascriptInterface
+	public boolean isRunAble() {
+		return runAble;
+	}
 
 	@JavascriptInterface
 	public void log(String msg) {
@@ -336,6 +347,22 @@ public class Web {
 				}
 			}
 		}
+	}
+
+	// 切换天线
+	@JavascriptInterface
+	public boolean savConfig (double tL, double tH, int to, String tb) {
+		tempL = tL;
+		tempH = tH;
+		timout = to;
+		this.tb = tb;
+
+		ldao.kvSet("tempL", tL + "");
+		ldao.kvSet("tempH", tH + "");
+		ldao.kvSet("timout", to + "");
+		ldao.kvSet("tb", tb);
+
+		return true;
 	}
 
 }

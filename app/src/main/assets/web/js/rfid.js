@@ -45,16 +45,21 @@ rfid = {
 		rfdo.log(msg);
 	},
 
-	/***************************/
+	/**************  业务相关  *************/
 
-	// 业务相关
+	// 获取配置信息
 	getConfig: function () {
 		return rfdo.getConfig();
 	},
 
-	// 停止循环
-	over: function () {
-		dat.stop();
+	// 保存配置信息
+	savConfig: function (tL, tH, to, tb) {
+		return rfdo.savConfig(tL, tH, to, tb);
+	},
+
+	// 是否可启动
+	isRunAble: function () {
+		return rfdo.isRunAble();
 	},
 
 	// 警告指示灯

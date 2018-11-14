@@ -20,7 +20,7 @@ public class DbLocal extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		for (EmLocalCrtSql e : EmLocalCrtSql.values()) {
-			if (!(e.name().equals("sdDir") || e.name().equals("sdDir"))) {
+			if (!(e.name().equals("sdDir") || e.name().equals("dbNam"))) {
 				db.execSQL(e.toString());
 			}
 		}

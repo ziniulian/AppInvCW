@@ -36,7 +36,6 @@ public class Ma extends Activity {
 		WebSettings ws = wv.getSettings();
 		ws.setDefaultTextEncodingName("UTF-8");
 		ws.setJavaScriptEnabled(true);
-//		wv.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 		wv.addJavascriptInterface(w, "rfdo");
 
 		sendUrl(EmUrl.Home);
@@ -50,14 +49,22 @@ public class Ma extends Activity {
 
 	@Override
 	protected void onPause() {
-		w.close();
+		close();
 		super.onPause();
 	}
 
 	@Override
 	protected void onDestroy() {
-		w.close();
+		close();
+		w.closeDb();
 		super.onDestroy();
+	}
+
+	private void close() {
+		if (getCurUi() == EmUrl.Home) {
+			sendUrl(EmUrl.RfOver);
+		}
+		w.close();
 	}
 
 	// 获取当前页面信息
@@ -99,8 +106,14 @@ public class Ma extends Activity {
 					wv.loadUrl((String)msg.obj);
 					break;
 				case Connected:
-					if (getCurUi() == EmUrl.Err) {
-						wv.goBack();
+					w.setRunAble(true);
+					switch (getCurUi()) {
+						case Err:
+							sendUrl(EmUrl.Home);
+							break;
+						case Home:
+							sendUrl(EmUrl.RfRun);
+							break;
 					}
 				default:
 					break;

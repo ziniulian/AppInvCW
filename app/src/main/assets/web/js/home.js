@@ -1,12 +1,13 @@
 function init() {
 	// 获取配置参数
-	var s = rfid.getConfig();
-	dat.config = JSON.parse(s);
+	dat.config = JSON.parse(rfid.getConfig());
 	rfid.timf = dat.config.timf;
 	dat.ts = dat.config.tb;
 
-	dat.initData();		// 数据初始化
-	dat.tid = setTimeout(dat.run, 3000);	// 准备运行
+	window.onbeforeunload = dat.stop;
+
+	dat.initData();
+	dat.run();
 }
 
 rfid.hdScan = function (arr) {
@@ -18,15 +19,16 @@ rfid.hdScan = function (arr) {
 		}
 	}
 
-	dat.checkAlarm();	// 监控警告
+	dat.checkAlarm();
 
 	if (rfid.tid === 0) {
 		if (dat.tid === -1) {
-			rfid.cAnt();	// 切换天线
-			rfid.powerLed (1);	// 电源灯常亮
+			rfid.cAnt();
+			rfid.powerLed (1);
 			dat.tid = setTimeout(dat.run, dat.config.timp);
 		} else {
-			rfid.powerLed (0);	// 电源灯常灭
+// rfid.log("overed!");
+			rfid.powerLed (0);
 		}
 	} else {
 		o = Date.now() - dat.tim;
@@ -88,17 +90,22 @@ dat = {
 
 	// 开始
 	run: function () {
-		dat.tid = -1;
-		dat.tim = Date.now();
-		dat.n = 0;
+		if (rfid.isRunAble()) {
+			dat.tid = -1;
+			dat.tim = Date.now();
+			dat.n = 0;
 
-		// 将所有标签读取状态改为未读取 ， 并统计标签个数
-		for (var s in dat.ts) {
-			dat.n ++;
-			dat.ts[s].isRead = false;
+			// 将所有标签读取状态改为未读取 ， 并统计标签个数
+			for (var s in dat.ts) {
+				dat.n ++;
+				dat.ts[s].isRead = false;
+			}
+
+// rfid.log(" runing ... ");
+			rfid.scanStart();
+		} else {
+// rfid.log(" waite ");
 		}
-
-		rfid.scanStart();
 	},
 
 	// 刷新标签
@@ -174,6 +181,7 @@ dat = {
 
 	// 结束
 	stop: function () {
+// rfid.log("over ...");
 		if (dat.tid > 0) {
 			clearTimeout(dat.tid);
 		} else {
