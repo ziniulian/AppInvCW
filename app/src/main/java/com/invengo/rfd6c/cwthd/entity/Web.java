@@ -32,6 +32,8 @@ public class Web {
 	// 配置信息
 	private Double tempL = 40.0;	// 温度下限 40 （包含）	安全温度
 	private Double tempH = 70.0;	// 温度上限 70 （不包含）	警告温度
+	private int timlog = 600000;	// 日志记录间隔时间（毫秒）
+	private int timiss = 30000;		// 标签失踪的最长时间（毫秒）
 	private int timout = 30000;		// 读取超时（毫秒）
 	private int timp = 100;			// 扫描间隔（毫秒）
 	private int timf = 1000;		// 刷新间隔（毫秒）

@@ -1,5 +1,5 @@
 .boso {
-	color: #00195C;
+	color: #00195D;
 	background-color: #00A0B6;
 }
 
@@ -29,7 +29,7 @@
 .hr1 {
 	height: 1%;
 	border: none;
-	background-color: #BCF8FF
+	background-color: #BCF8FF;
 }
 
 /* ---- 下部框架 ---- */
@@ -333,7 +333,7 @@
 	width: 25%;
 	text-align: right;
 	font-weight: bolder;
-	line-height: 2.5;	
+	line-height: 2.5;
 }
 
 .set_out .t {
